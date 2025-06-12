@@ -19,28 +19,24 @@ Aquí algunos lugares destacados:
 Tu tono debe ser amigable, claro y útil.
 """
 
-@app.route('/')
-def home():
-    return render_template('index.html')
-
 @app.route('/chat', methods=['POST'])
 def chat():
     user_input = request.json.get('message', '')
 
     try:
-        completion = openai.chat.completions.create(
-            model="gpt-3.5-turbo",  # o "gpt-4" si tienes acceso
+        completion = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
             messages=[
                 {"role": "system", "content": contexto},
                 {"role": "user", "content": user_input}
             ]
         )
-
-        response = completion.choices[0].message.content.strip()
+        response = completion.choices[0].message["content"].strip()
     except Exception as e:
-        response = f"Ocurrió un error: {str(e)}"
+        response = f"Ocurrió un error: {e}"
 
     return jsonify({"response": response})
+
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
