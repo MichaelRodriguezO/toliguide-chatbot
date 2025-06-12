@@ -4,30 +4,30 @@ import os
 
 app = Flask(__name__)
 
-# Configurar la API Key de OpenAI desde una variable de entorno
+# Configura la API Key desde una variable de entorno
 openai.api_key = os.environ.get("OPENAI_API_KEY")
 
-# Contexto para que el modelo sepa cómo debe comportarse
+# Instrucciones del asistente
 contexto = """
-Eres ToliGuide, un asistente turístico experto en Ibagué, Colombia.
-Puedes recomendar lugares turísticos, hoteles, restaurantes, zonas de naturaleza, barrios tradicionales,
-y dar consejos para turistas nacionales o extranjeros.
-Aquí algunos lugares destacados:
-- Turísticos: Plaza de Bolívar, Catedral Primada, Panóptico, Jardín Botánico San Jorge, Parque Museo La Martinica, Cañón del Combeima.
-- Hoteles: Sonesta, Hotel Estelar Altamira, Casa Morales, Hotel Dann Combeima, Eco Star Hotel.
+Eres ToliGuide, un asistente turístico especializado en la ciudad de Ibagué, Colombia.
+Debes ayudar a los usuarios recomendando lugares turísticos, hoteles, restaurantes y actividades culturales o de naturaleza.
+Sitios destacados:
+- Turísticos: Plaza de Bolívar, Catedral Primada, Panóptico, Jardín Botánico San Jorge, Cañón del Combeima, Parque Centenario, La Martinica.
+- Hoteles: Sonesta, Estelar Altamira, Casa Morales, Dann Combeima, Eco Star.
 - Restaurantes: La Parrilla de Marcos, Rancho Mazorca, Palo Santo, Cuzco.
-Tu tono debe ser amigable, claro y útil.
+Tu tono debe ser claro, amable y útil.
 """
-app.route('/')
+
+@app.route('/')
 def home():
     return render_template('index.html')
-
 
 @app.route('/chat', methods=['POST'])
 def chat():
     user_input = request.json.get('message', '')
 
     try:
+        # Llamada a OpenAI (usando versión 0.28.1 compatible)
         completion = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[
@@ -41,8 +41,7 @@ def chat():
 
     return jsonify({"response": response})
 
-
 if __name__ == '__main__':
+    # Para que funcione en Render
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
-    
