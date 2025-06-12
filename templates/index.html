@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chatbot ToliGuide</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    #chatbox { width: 100%; max-width: 400px; margin: auto; }
+    .msg { margin: 10px 0; }
+    .user { font-weight: bold; }
+    .bot { color: green; }
+  </style>
+</head>
+<body>
+  <h2>Chatbot ToliGuide – Ibagué</h2>
+  <div id="chatbox"></div>
+  <input type="text" id="input" placeholder="Pregunta sobre turismo, hoteles o restaurantes..." onkeydown="if(event.key==='Enter') sendMessage()" />
+  <script>
+    function sendMessage() {
+      let input = document.getElementById("input");
+      let message = input.value;
+      if (!message) return;
+      document.getElementById("chatbox").innerHTML += `<div class='msg user'>Tú: ${message}</div>`;
+      fetch("/chat", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({message})
+      })
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("chatbox").innerHTML += `<div class='msg bot'>Bot: ${data.response}</div>`;
+        input.value = "";
+      });
+    }
+  </script>
+</body>
+</html>
