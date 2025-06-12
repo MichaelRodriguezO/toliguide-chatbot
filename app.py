@@ -18,6 +18,10 @@ Aquí algunos lugares destacados:
 - Restaurantes: La Parrilla de Marcos, Rancho Mazorca, Palo Santo, Cuzco.
 Tu tono debe ser amigable, claro y útil.
 """
+app.route('/')
+def home():
+    return render_template('index.html')
+
 
 @app.route('/chat', methods=['POST'])
 def chat():
