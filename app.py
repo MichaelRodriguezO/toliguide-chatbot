@@ -4,8 +4,8 @@ import os
 app = Flask(__name__)
 
 saludos = ["hola", "wenas", "buenas", "qué más", "holi", "saludos", "empezar", "inicio", "toli", "hey"]
+palabras_comunes = {"de", "la", "el", "y", "en", "a", "del", "con", "una", "un", "por", "para", "donde"}
 
-# Google Maps base
 def link_maps(nombre):
     return f"📍 Ver en Google Maps: https://www.google.com/maps/search/{'+'.join(nombre.split())}"
 
@@ -50,7 +50,7 @@ info = {
 
     "restaurantes": {
         "sonora parrilla bar": "Carnes a la parrilla y platos típicos. Moderno y familiar.",
-        "sr. miyagi asian cuisine": "Comida japonesa, tailandesa y china. Internacional.",
+        "sr. miyagi asian cuisine": "Comida japonesa, tailandesa y china. Sabores internacionales.",
         "punta del este restaurante bar": "Parrilla, mariscos, cocina internacional. Vista excelente.",
         "la parrilla de marcos": "Carnes a la brasa y platos tradicionales.",
         "chorilongo": "Choripanes y comida callejera gourmet. Juvenil.",
@@ -62,7 +62,6 @@ info = {
     }
 }
 
-# Filtros inteligentes por intención
 def filtrar_por_intencion(user_input):
     if "familia" in user_input:
         return (
@@ -75,21 +74,21 @@ def filtrar_por_intencion(user_input):
     elif "mochilero" in user_input or "hostal" in user_input:
         return (
             "🎒 Recomendado para mochileros:\n"
-            "• Eco Star Hotel (económico)\n"
-            "• Chorilongo (comida urbana)\n"
+            "• Eco Star Hotel\n"
+            "• Chorilongo\n"
             "• Parque Museo La Martinica"
         )
     elif "pareja" in user_input or "romántico" in user_input:
         return (
             "💑 Ideal para parejas:\n"
-            "• La Ricotta (restaurante italiano)\n"
+            "• La Ricotta\n"
             "• Hotel Dann Combeima\n"
-            "• Restaurante Altavista (con vista)"
+            "• Restaurante Altavista"
         )
     elif "vista" in user_input:
         return (
             "🌇 Lugares con vista panorámica:\n"
-            "• Altavista\n"
+            "• Restaurante Altavista\n"
             "• La Martinica\n"
             "• Cañón del Combeima"
         )
@@ -126,25 +125,25 @@ def chat():
             emoji = {"historia": "📜", "naturaleza": "🌿", "cultura": "🎭"}[cat]
             response += f"\n{emoji} {cat.capitalize()}:\n• " + "\n• ".join(lugares.keys()) + "\n"
 
-    elif "hotel" in user_input:
+    elif "hotel" in user_input or "dormir" in user_input or "alojamiento" in user_input:
         response = "🛌 Hoteles recomendados:\n• " + "\n• ".join(info["hoteles"].keys())
 
-    elif "restaurante" in user_input or "comida" in user_input:
+    elif "restaurante" in user_input or "comida" in user_input or "comer" in user_input:
         response = "🍽 Restaurantes destacados:\n• " + "\n• ".join(info["restaurantes"].keys())
 
     else:
-        # Filtros inteligentes por tipo de viajero o preferencia
         filtro = filtrar_por_intencion(user_input)
         if filtro:
             response = filtro
         else:
-            # Buscar coincidencias por palabra clave
             encontrado = False
             for categoria in ["turismo", "hoteles", "restaurantes"]:
                 if categoria == "turismo":
                     for subcat in info["turismo"].values():
                         for nombre, descripcion in subcat.items():
-                            if any(p in user_input for p in nombre.split()):
+                            nombre_limpio = set(nombre.split()) - palabras_comunes
+                            mensaje_limpio = set(user_input.split()) - palabras_comunes
+                            if nombre.lower() in user_input or nombre_limpio & mensaje_limpio:
                                 response = f"{nombre.title()}:\n{descripcion}\n{link_maps(nombre)}"
                                 encontrado = True
                                 break
@@ -152,7 +151,9 @@ def chat():
                             break
                 else:
                     for nombre, descripcion in info[categoria].items():
-                        if any(p in user_input for p in nombre.split()):
+                        nombre_limpio = set(nombre.split()) - palabras_comunes
+                        mensaje_limpio = set(user_input.split()) - palabras_comunes
+                        if nombre.lower() in user_input or nombre_limpio & mensaje_limpio:
                             response = f"{nombre.title()}:\n{descripcion}\n{link_maps(nombre)}"
                             encontrado = True
                             break
@@ -164,4 +165,4 @@ def chat():
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
-            
+    
