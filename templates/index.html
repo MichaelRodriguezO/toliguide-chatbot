@@ -9,7 +9,8 @@
       padding: 0;
       height: 100%;
       font-family: Arial, sans-serif;
-      background-color: #ffffff;
+      background-color: #fff;
+      font-size: 12px;
     }
 
     #contenedor {
@@ -21,21 +22,20 @@
     header {
       background-color: #3498db;
       color: white;
-      padding: 8px;
+      padding: 5px;
       text-align: center;
+      font-size: 13px;
       font-weight: bold;
-      font-size: 15px;
     }
 
     #chatbox {
       flex: 1;
       overflow-y: auto;
-      padding: 8px;
+      padding: 6px;
     }
 
     .msg {
-      margin: 5px 0;
-      font-size: 13px;
+      margin: 4px 0;
       line-height: 1.3;
       opacity: 0;
       animation: fadeIn 0.3s ease-in-out forwards;
@@ -48,8 +48,8 @@
     .user {
       text-align: right;
       background: #dff9fb;
-      padding: 6px 10px;
-      border-radius: 12px;
+      padding: 5px 8px;
+      border-radius: 10px;
       display: inline-block;
       max-width: 80%;
     }
@@ -57,18 +57,18 @@
     .bot {
       text-align: left;
       background: #f1f2f6;
-      padding: 6px 10px;
-      border-radius: 12px;
+      padding: 5px 8px;
+      border-radius: 10px;
       display: inline-block;
       max-width: 80%;
     }
 
     #quick-replies {
       display: flex;
-      flex-wrap: wrap;
       justify-content: center;
       gap: 4px;
-      padding: 4px;
+      padding: 4px 2px;
+      flex-wrap: wrap;
       background: #f4f4f4;
     }
 
@@ -76,31 +76,26 @@
       background-color: #3498db;
       color: white;
       border: none;
-      padding: 5px 8px;
-      border-radius: 14px;
+      padding: 4px 8px;
+      border-radius: 12px;
       font-size: 11px;
       cursor: pointer;
     }
 
-    .quick-btn:hover {
-      background-color: #2980b9;
-    }
-
     #input {
-      width: 94%;
-      margin: 4px auto 6px;
+      margin: 5px;
       padding: 6px;
-      font-size: 13px;
-      border-radius: 6px;
+      font-size: 12px;
+      border-radius: 8px;
       border: 1px solid #ccc;
-      display: block;
+      width: calc(100% - 10px);
     }
   </style>
 </head>
 <body>
 
   <div id="contenedor">
-    <header>Toli-Guide – Asistente turístico</header>
+    <header>Toli-Guide – Asistente</header>
 
     <div id="chatbox"></div>
 
