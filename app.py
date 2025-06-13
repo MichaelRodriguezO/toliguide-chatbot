@@ -1,10 +1,18 @@
 from flask import Flask, request, jsonify, render_template
 import os
+import unicodedata
 
 app = Flask(__name__)
 
 saludos = ["hola", "wenas", "buenas", "qué más", "holi", "saludos", "empezar", "inicio", "toli", "hey"]
 palabras_comunes = {"de", "la", "el", "y", "en", "a", "del", "con", "una", "un", "por", "para", "donde"}
+
+# 🔧 Función para quitar tildes
+def normalizar(texto):
+    return ''.join(
+        c for c in unicodedata.normalize('NFD', texto.lower())
+        if unicodedata.category(c) != 'Mn'
+    )
 
 def link_maps(nombre):
     return f"📍 Ver en Google Maps: https://www.google.com/maps/search/{'+'.join(nombre.split())}"
@@ -66,44 +74,32 @@ def filtrar_por_intencion(user_input):
     if "familia" in user_input:
         return (
             "👨‍👩‍👧 Lugares ideales para familias:\n"
-            "• Casa Morales\n"
-            "• Cañón del Combeima\n"
-            "• Jardín Botánico San Jorge\n"
-            "• Restaurante Altavista"
+            "• Casa Morales\n• Cañón del Combeima\n• Jardín Botánico San Jorge\n• Restaurante Altavista"
         )
     elif "mochilero" in user_input or "hostal" in user_input:
         return (
             "🎒 Recomendado para mochileros:\n"
-            "• Eco Star Hotel\n"
-            "• Chorilongo\n"
-            "• Parque Museo La Martinica"
+            "• Eco Star Hotel\n• Chorilongo\n• Parque Museo La Martinica"
         )
-    elif "pareja" in user_input or "romántico" in user_input:
+    elif "pareja" in user_input or "romantico" in user_input:
         return (
             "💑 Ideal para parejas:\n"
-            "• La Ricotta\n"
-            "• Hotel Dann Combeima\n"
-            "• Restaurante Altavista"
+            "• La Ricotta\n• Hotel Dann Combeima\n• Restaurante Altavista"
         )
     elif "vista" in user_input:
         return (
             "🌇 Lugares con vista panorámica:\n"
-            "• Restaurante Altavista\n"
-            "• La Martinica\n"
-            "• Cañón del Combeima"
+            "• Restaurante Altavista\n• La Martinica\n• Cañón del Combeima"
         )
     elif "marisco" in user_input:
         return (
             "🦐 Restaurantes con mariscos:\n"
-            "• Maria y El Mar\n"
-            "• Punta del Este Restaurante Bar"
+            "• Maria y El Mar\n• Punta del Este Restaurante Bar"
         )
-    elif "típico" in user_input or "tamal" in user_input or "lechona" in user_input:
+    elif "tipico" in user_input or "tamal" in user_input or "lechona" in user_input:
         return (
             "🥘 Comida típica tolimense:\n"
-            "• La Casona Comida Típica\n"
-            "• La Parrilla de Marcos\n"
-            "• El Fogón Llanero"
+            "• La Casona Comida Típica\n• La Parrilla de Marcos\n• El Fogón Llanero"
         )
     return None
 
@@ -113,13 +109,14 @@ def home():
 
 @app.route('/chat', methods=['POST'])
 def chat():
-    user_input = request.json.get('message', '').lower()
+    raw_input = request.json.get('message', '')
+    user_input = normalizar(raw_input)
     response = "No entendí tu mensaje. Puedes escribir: turismo, hoteles o restaurantes."
 
-    if any(s in user_input for s in saludos):
+    if any(normalizar(s) in user_input for s in saludos):
         response = info["introduccion"]
 
-    elif "turismo" in user_input:
+    elif "turismo" in user_input or "turisticos" in user_input or "lugares" in user_input:
         response = "🏞 Lugares turísticos por categoría:\n"
         for cat, lugares in info["turismo"].items():
             emoji = {"historia": "📜", "naturaleza": "🌿", "cultura": "🎭"}[cat]
@@ -141,9 +138,10 @@ def chat():
                 if categoria == "turismo":
                     for subcat in info["turismo"].values():
                         for nombre, descripcion in subcat.items():
-                            nombre_limpio = set(nombre.split()) - palabras_comunes
+                            nombre_normalizado = normalizar(nombre)
+                            nombre_limpio = set(nombre_normalizado.split()) - palabras_comunes
                             mensaje_limpio = set(user_input.split()) - palabras_comunes
-                            if nombre.lower() in user_input or nombre_limpio & mensaje_limpio:
+                            if nombre_normalizado in user_input or nombre_limpio & mensaje_limpio:
                                 response = f"{nombre.title()}:\n{descripcion}\n{link_maps(nombre)}"
                                 encontrado = True
                                 break
@@ -151,9 +149,10 @@ def chat():
                             break
                 else:
                     for nombre, descripcion in info[categoria].items():
-                        nombre_limpio = set(nombre.split()) - palabras_comunes
+                        nombre_normalizado = normalizar(nombre)
+                        nombre_limpio = set(nombre_normalizado.split()) - palabras_comunes
                         mensaje_limpio = set(user_input.split()) - palabras_comunes
-                        if nombre.lower() in user_input or nombre_limpio & mensaje_limpio:
+                        if nombre_normalizado in user_input or nombre_limpio & mensaje_limpio:
                             response = f"{nombre.title()}:\n{descripcion}\n{link_maps(nombre)}"
                             encontrado = True
                             break
