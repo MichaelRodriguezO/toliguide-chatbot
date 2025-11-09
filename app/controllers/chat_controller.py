@@ -1,18 +1,17 @@
-from flask import Blueprint, request, jsonify
-from app.services.intent_classifier import detect_intent
-from app.services.response_builder import generate_response
-from app.services.session_manager import get_session_id
+from app.services.intent_classifier import IntentClassifier
+from app.services.response_builder import ResponseBuilder
+from app.services.fallback import FallbackService
 
-chat_bp = Blueprint("chat_bp", __name__)
+classifier = IntentClassifier()
+builder = ResponseBuilder()
+fallback = FallbackService()
 
-@chat_bp.route("/chat", methods=["POST"])
-def chat():
-    data = request.get_json(force=True)
-    message = data.get("message", "")
-    session_id = get_session_id(data)
+def process_message(message):
+    intent = classifier.classify(message)
+    response = builder.build(intent)
 
-    intent = detect_intent(message)
-    response = generate_response(intent, message)
+    if response:
+        return response
 
-    return jsonify({"response": response})
+    return fallback.handle(message)
 
