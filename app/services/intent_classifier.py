@@ -11,3 +11,4 @@ def detect_intent(text):
         return "restaurantes"
 
     return "busqueda"
+
