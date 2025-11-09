@@ -1,56 +1,37 @@
-from app.data.info_data import INFO
-from app.utils.normalizer import normalize
-from app.utils.sanitizer import clean_input
+class ResponseBuilder:
 
-def build_map_link(name):
-    import urllib.parse
-    return f"📍 Ver en Google Maps: https://www.google.com/maps/search/{urllib.parse.quote(name)}"
+    def build(self, intent: str) -> str:
 
-def generate_response(intent, text):
-    text = clean_input(text)
-    normalized = normalize(text)
+        if intent == "greeting":
+            return "¡Hola! 😊 ¿En qué puedo ayudarte hoy?"
 
-    # Mostrar categorías completas
-    if intent == "turismo":
-        response = "🏞 Lugares turísticos por categoría:\n"
-        for category, items in INFO["turismo"].items():
-            emoji = {"historia": "📜", "naturaleza": "🌿", "cultura": "🎭"}[category]
-            response += f"\n{emoji} {category.capitalize()}:\n"
-            for place in items:
-                response += f"• {place.title()}\n"
-        return response
+        if intent == "how_are_you":
+            return "¡Estoy excelente! Aquí listo para ayudarte con turismo, hoteles o lo que necesites. ¿Qué deseas consultar?"
 
-    if intent == "hoteles":
-        return "🛌 Hoteles recomendados:\n" + "\n".join([f"• {h.title()}" for h in INFO["hoteles"]])
+        if intent == "who_are_you":
+            return "Soy ToliGuide, tu asistente turístico. Te ayudo a encontrar hoteles, restaurantes, rutas y recomendaciones sobre Tolima y Colombia. ¿Qué te gustaría saber?"
 
-    if intent == "restaurantes":
-        return "🍽 Restaurantes destacados:\n" + "\n".join([f"• {r.title()}" for r in INFO["restaurantes"]])
+        if intent == "capabilities":
+            return (
+                "Puedo ayudarte con:\n"
+                "✅ Información turística\n"
+                "✅ Recomendación de hoteles\n"
+                "✅ Restaurantes y comida típica\n"
+                "✅ Lugares para visitar\n"
+                "✅ Guías y tips de viaje\n\n"
+                "¡Pregunta lo que necesites!"
+            )
 
-    # Búsqueda por coincidencia exacta
-    for category in ["turismo", "hoteles", "restaurantes"]:
-        if category == "turismo":
-            for subcat in INFO["turismo"].values():
-                for name, desc in subcat.items():
-                    if normalize(name) in normalized:
-                        return f"{name.title()}:\n{desc}\n{build_map_link(name)}"
-        else:
-            for name, desc in INFO[category].items():
-                if normalize(name) in normalized:
-                    return f"{name.title()}:\n{desc}\n{build_map_link(name)}"
+        if intent == "farewell":
+            return "¡Hasta luego! 👋 Espero haber sido de ayuda. ¡Que tengas un excelente día!"
 
-    # Búsqueda por palabras clave
-    user_words = set(normalized.split())
-    for category in ["turismo", "hoteles", "restaurantes"]:
-        if category == "turismo":
-            for subcat in INFO["turismo"].values():
-                for name, desc in subcat.items():
-                    name_words = set(normalize(name).split())
-                    if user_words & name_words:
-                        return f"{name.title()}:\n{desc}\n{build_map_link(name)}"
-        else:
-            for name, desc in INFO[category].items():
-                name_words = set(normalize(name).split())
-                if user_words & name_words:
-                    return f"{name.title()}:\n{desc}\n{build_map_link(name)}"
+        if intent == "hotel_info":
+            return "Aquí tienes recomendaciones de hoteles destacados en la zona. ¿Buscas algo económico, familiar o de lujo?"
 
-    return "No entendí tu búsqueda, intenta con: turismo, hoteles o restaurantes."
+        if intent == "food_info":
+            return "¿Buscas restaurantes típicos, comida gourmet o sitios económicos? Te puedo recomendar varios en la región."
+
+        if intent == "tourism_info":
+            return "Tolima tiene lugares increíbles. ¿Quieres recomendaciones de naturaleza, aventura o cultura?"
+
+        return None  # si no encuentra
