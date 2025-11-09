@@ -1,1 +1,2 @@
-print("sanit")
+def clean_input(text):
+    return text.strip()
