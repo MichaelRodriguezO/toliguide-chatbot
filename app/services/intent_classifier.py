@@ -8,7 +8,7 @@ Utiliza activadores definidos en el repositorio y normalización del texto.
 """
 
 from app.data.repository import Repository
-from app.utils.normalizer import normalize_text
+from app.utils.normalizer import normalizar_texto
 
 
 class IntentClassifier:
