@@ -3,11 +3,8 @@
 """
 repository.py
 --------------
-Este módulo actúa como repositorio central de datos.
-Se encarga de proporcionar acceso a todas las bases de datos
-definidas en info_data.py sin hacer lógica de negocio.
-
-Clean Architecture: Capa de datos.
+Repositorio central de datos.
+Clean Architecture — capa de datos.
 """
 
 from app.data.info_data import (
@@ -21,7 +18,19 @@ from app.data.info_data import (
     frases_prohibidas
 )
 
-from app.utils.normalizer import normalizar_texto
+from app.utils.normalizer import normalize_text
+
+
+# Extraemos los diccionarios reales desde DATA
+turismo = DATA.get("turismo", {})
+hoteles = DATA.get("hoteles", {})
+restaurantes = DATA.get("restaurantes", {})
+
+# Si necesitas palabras comunes, defínelas aquí o en info_data
+palabras_comunes = {"de", "la", "el", "en", "los", "las", "un", "una"}
+
+# Activadores deben venir de info_data si quieres usarlos
+activadores_intencion = intenciones_clave
 
 
 class Repository:
@@ -53,21 +62,18 @@ class Repository:
         return preguntas_frecuentes.get(palabra_clave)
 
     # ------------------------------------------------------------
-    # CATEGORÍAS TURISMO
+    # TURISMO
     # ------------------------------------------------------------
     @staticmethod
     def get_turismo_categorias():
-        """Devuelve historia, naturaleza, cultura como diccionarios."""
         return turismo
 
     @staticmethod
     def get_turismo_categoria(nombre_categoria):
-        """Devuelve un subdiccionario de historia o cultura o naturaleza."""
         return turismo.get(nombre_categoria)
 
     @staticmethod
     def get_turismo_lugares():
-        """Devuelve solo lista de nombres de TODOS los lugares."""
         lugares = []
         for categoria in turismo.values():
             for lugar in categoria.keys():
@@ -76,9 +82,7 @@ class Repository:
 
     @staticmethod
     def get_info_lugar_turistico(nombre_lugar):
-        """Busca un lugar específico y devuelve su descripción."""
         nombre_normalizado = normalize_text(nombre_lugar)
-
         for categoria in turismo.values():
             for lugar, descripcion in categoria.items():
                 if normalize_text(lugar) == nombre_normalizado:
@@ -124,14 +128,10 @@ class Repository:
         return None
 
     # ------------------------------------------------------------
-    # BÚSQUEDA INTELIGENTE BASADA EN PALABRAS CLAVE
+    # BÚSQUEDA INTELIGENTE
     # ------------------------------------------------------------
     @staticmethod
     def buscar_coincidencia(nombre, dataset):
-        """
-        Busca coincidencia parcial entre nombre del usuario y elementos del dataset.
-        'dataset' debe ser un dict { nombre : descripcion }
-        """
         palabras_usuario = set(normalize_text(nombre).split()) - palabras_comunes
 
         for key in dataset:
@@ -163,7 +163,3 @@ class Repository:
     @staticmethod
     def get_activadores():
         return activadores_intencion
-
-    @staticmethod
-    def get_palabras_comunes():
-        return palabras_comunes
