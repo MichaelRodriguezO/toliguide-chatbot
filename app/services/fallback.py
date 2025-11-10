@@ -9,7 +9,7 @@ Implementa respuestas variadas, detección básica de emociones y sugerencias.
 
 import random
 from app.data.repository import Repository
-from app.utils.normalizer import normalize_text
+from app.utils.normalizer import normalizar_texto
 
 
 class FallbackService:
@@ -61,7 +61,7 @@ class FallbackService:
         Entrada principal del fallback.
         Decide qué tipo de respuesta usar según el contexto del mensaje.
         """
-        mensaje_norm = normalize_text(mensaje)
+        mensaje_norm = normalizar_texto(mensaje)
 
         # 1. ¿Hay señales de frustración?
         if self.detect_frustracion(mensaje_norm):
