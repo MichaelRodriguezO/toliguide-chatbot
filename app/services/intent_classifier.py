@@ -2,99 +2,74 @@
 
 """
 intent_classifier.py
----------------------
-Clasifica el mensaje del usuario en una intención específica.
-Utiliza activadores definidos en el repositorio y normalización del texto.
+--------------------
+Clasifica la intención del usuario basándose en palabras clave
+y reglas simples de contexto.
 """
 
 from app.data.repository import Repository
 from app.utils.normalizer import normalizar_texto
 
 
-class IntentClassifier:
+repo = Repository()
 
-    def __init__(self):
-        self.repo = Repository()
-        self.activadores = self.repo.get_activadores()
 
-    # ------------------------------------------------------------
-    # MÉTODO PRINCIPAL
-    # ------------------------------------------------------------
-    def classify(self, mensaje):
-        """
-        Clasifica la intención del mensaje.
-        Devuelve un string que identifica la intención detectada.
-        """
-        mensaje = normalizar_texto(mensaje)
+def classify_intent(texto):
+    """
+    Clasifica intenciones principales.
+    Retorna un string con el tipo de intención detectada.
+    """
 
-        # 1. Prioridad alta: saludo
-        if self._match_intent("saludo", mensaje):
-            return "saludo"
+    texto = normalizar_texto(texto)
 
-        # 2. Prioridad alta: despedida
-        if self._match_intent("despedida", mensaje):
-            return "despedida"
+    # Intento de saludo
+    SALUDOS = [
+        "hola", "holi", "buenas", "wenas", "hello", "hey",
+        "saludos", "que mas", "como estas"
+    ]
 
-        # 3. Agradecimientos
-        if self._match_intent("agradecimiento", mensaje):
-            return "agradecimiento"
+    if any(s in texto for s in SALUDOS):
+        return "saludo"
 
-        # 4. Preguntas frecuentes
-        if self._match_intent("preguntas", mensaje):
-            return "pregunta_frecuente"
+    # Intento de despedida
+    DESPEDIDAS = [
+        "adios", "bye", "hasta luego", "nos vemos", "gracias"
+    ]
 
-        # 5. Categorías principales
-        if self._match_intent("turismo", mensaje):
-            return "turismo"
+    if any(d in texto for d in DESPEDIDAS):
+        return "despedida"
 
-        if self._match_intent("hoteles", mensaje):
-            return "hoteles"
+    # Turismo
+    if "turismo" in texto or "lugares" in texto or "turistico" in texto:
+        return "turismo"
 
-        if self._match_intent("restaurantes", mensaje):
-            return "restaurantes"
+    # Hoteles
+    if "hotel" in texto or "dormir" in texto or "alojamiento" in texto:
+        return "hoteles"
 
-        # 6. Lugar específico de turismo
-        if self._buscar_lugar_turistico(mensaje):
-            return "lugar_turistico"
+    # Restaurantes
+    if "restaurante" in texto or "comida" in texto or "comer" in texto:
+        return "restaurantes"
 
-        # 7. Hotel específico
-        if self._buscar_hotel(mensaje):
-            return "hotel_especifico"
+    # Intentos especiales
+    if "familia" in texto:
+        return "familia"
 
-        # 8. Restaurante específico
-        if self._buscar_restaurante(mensaje):
-            return "restaurante_especifico"
+    if "pareja" in texto or "romantico" in texto:
+        return "pareja"
 
-        # 9. Intención desconocida
-        return "fallback"
+    if "mochilero" in texto or "hostal" in texto:
+        return "mochilero"
 
-    # ------------------------------------------------------------
-    # DETECCIÓN POR PALABRAS CLAVE
-    # ------------------------------------------------------------
-    def _match_intent(self, intent_key, mensaje):
-        """
-        Revisa si alguna palabra clave del intent está en el mensaje.
-        """
-        palabras = self.activadores.get(intent_key, [])
-        return any(p in mensaje for p in palabras)
+    if "marisco" in texto or "carne" in texto or "pescado" in texto:
+        return "gastronomia"
 
-    # ------------------------------------------------------------
-    # BÚSQUEDA ESPECÍFICA EN BASES DE DATOS
-    # ------------------------------------------------------------
+    # Lugar específico
+    lugar, descripcion = repo.buscar_lugar(texto)
+    if lugar:
+        return ("lugar", lugar)
 
-    def _buscar_lugar_turistico(self, mensaje):
-        """
-        Detecta si se menciona un lugar turístico por nombre exacto o parcial.
-        """
-        coincidencia = self.repo.buscar_en_turismo(mensaje)
-        return coincidencia is not None
-
-    def _buscar_hotel(self, mensaje):
-        coincidencia = self.repo.buscar_en_hoteles(mensaje)
-        return coincidencia is not None
-
-    def _buscar_restaurante(self, mensaje):
-        coincidencia = self.repo.buscar_en_restaurantes(mensaje)
-        return coincidencia is not None
+    # Si no detecta nada
+    return None
 
 
