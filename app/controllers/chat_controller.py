@@ -3,7 +3,7 @@ from app.services.intent_classifier import IntentClassifier
 from app.services.response_builder import ResponseBuilder
 from app.services.fallback import FallbackService
 from app.services.session_manager import SessionManager
-from app.utils.normalizer import normalize_text
+from app.utils.normalizer import normalizar_texto
 from app.utils.sanitizer import sanitize_text
 from app.utils.validator import is_valid_message
 
@@ -32,7 +32,7 @@ def chat():
 
         # Limpieza y normalización
         safe_message = sanitize_text(message)
-        normalized_message = normalize_text(safe_message)
+        normalized_message = normalizar_texto(safe_message)
 
         # Registrar el mensaje del usuario
         session_manager.save_user_message(session_id, normalized_message)
