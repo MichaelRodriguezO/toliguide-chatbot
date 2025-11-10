@@ -3,109 +3,108 @@
 """
 info_data.py
 ------------------
-Repositorio de datos estáticos para el chatbot turístico.
-Incluye turismo, hoteles, restaurantes, saludos, despedidas,
-agradecimientos, fallbacks, frases prohibidas e intenciones.
+Repositorio de datos estáticos del chatbot turístico.
+Incluye saludos, despedidas, preguntas frecuentes, categorías,
+lugares, hoteles, restaurantes y frases de fallback.
 """
 
 # ===============================================================
-# DATOS PRINCIPALES DEL CHATBOT
+# LISTAS DE RESPUESTAS BÁSICAS
+# ===============================================================
+
+saludos = [
+    "¡Hola! ¿Cómo puedo ayudarte hoy?",
+    "¡Bienvenido a ToliGuide! 😊",
+    "¡Hola! ¿Buscas información turística o recomendaciones?",
+    "¡Qué gusto verte por aquí! ¿En qué te puedo ayudar?"
+]
+
+despedidas = [
+    "¡Hasta luego! 😊",
+    "¡Gracias por usar ToliGuide! 🌄",
+    "¡Cuídate y vuelve pronto!",
+    "¡Que tengas un excelente día!"
+]
+
+agradecimientos = [
+    "¡Con gusto! 😊",
+    "¡Siempre feliz de ayudar!",
+    "¡Gracias a ti por preguntar!",
+    "¿Necesitas algo más?"
+]
+
+fallback_responses = [
+    "No estoy seguro de entender, ¿puedes explicarlo de otra forma?",
+    "Puedo ayudarte con turismo, hoteles o restaurantes de Ibagué.",
+    "No tengo esa información aún, pero puedo sugerirte lugares.",
+    "Reformula tu pregunta para darte una mejor respuesta."
+]
+
+frases_prohibidas = [
+    "bomba", "arma", "matar", "atentado", "amenaza", "terrorismo",
+    "narco", "secuestro", "explosivo"
+]
+
+# ===============================================================
+# PREGUNTAS FRECUENTES (VARIABLE QUE FALTABA)
+# ===============================================================
+
+preguntas_frecuentes = {
+    "horarios": "Muchos sitios turísticos abren desde las 8am hasta las 6pm.",
+    "clima": "El clima en Ibagué suele ser templado, entre 21°C y 28°C.",
+    "transporte": "Puedes moverte en busetas, taxis y apps como InDriver.",
+    "seguridad": "Las zonas turísticas principales son seguras, pero siempre mantén precaución."
+}
+
+# ===============================================================
+# INFORMACIÓN PRINCIPAL DE CONTENIDO
 # ===============================================================
 
 DATA = {
     "turismo": {
         "historia": {
-            "Catedral Primada de Ibagué": "Templo emblemático ubicado en el centro histórico.",
-            "Plaza de Bolívar": "Punto histórico principal de Ibagué, rodeado de arquitectura colonial."
+            "Catedral Primada de Ibagué": "Templo emblemático en el centro histórico.",
+            "Plaza de Bolívar": "Icono cultural y político de la ciudad."
         },
         "naturaleza": {
-            "Cañón del Combeima": "El destino ecológico más representativo de Ibagué.",
-            "Nevado del Tolima": "Montaña icónica del parque Los Nevados.",
-            "Jardín Botánico San Jorge": "Reserva natural urbana con senderos verdes."
+            "Cañón del Combeima": "Corriente natural con senderismo y miradores.",
+            "Nevado del Tolima": "Imponente cumbre del Parque Los Nevados.",
+            "Jardín Botánico San Jorge": "Reserva natural con senderos ecológicos."
         },
         "cultura": {
-            "Teatro Tolima": "Escenario cultural de conciertos y obras.",
-            "Conservatorio del Tolima": "Centro emblemático de formación musical.",
-            "Museo de Arte del Tolima": "Exposiciones permanentes y temporales."
+            "Teatro Tolima": "Lugar histórico de eventos y presentaciones.",
+            "Conservatorio del Tolima": "Famoso centro musical.",
+            "Museo de Arte del Tolima": "Exposición de arte moderno y clásico."
         }
     },
 
     "hoteles": {
-        "Hotel Dann Combeima": "Hotel céntrico de alta categoría.",
-        "Hotel Estelar Altamira": "Hotel de lujo rodeado de áreas verdes.",
-        "Eco Star Hotel": "Hospedaje económico moderno.",
-        "Casa Morales": "Hotel familiar con piscina y spa."
+        "Hotel Dann Combeima": "Hotel elegante ubicado en el centro.",
+        "Hotel Estelar Altamira": "Hotel 5 estrellas con jardines y piscina.",
+        "Eco Star Hotel": "Hospedaje moderno y económico.",
+        "Casa Morales": "Hotel familiar con piscina y zonas de recreo."
     },
 
     "restaurantes": {
-        "María y el Mar": "Especialidad en mariscos y pescados frescos.",
-        "La Ricotta": "Comida italiana en ambiente romántico.",
-        "Punta del Este": "Mariscos tradicionales.",
-        "El Fogón Llanero": "Comida típica llanera, famosa por la mamona.",
-        "La Parrilla de Marcos": "Carnes a la parrilla."
+        "María y el Mar": "Especialidad en mariscos frescos.",
+        "La Ricotta": "Excelente comida italiana y ambiente tranquilo.",
+        "Punta del Este": "Mariscos con preparación tradicional.",
+        "El Fogón Llanero": "Comida típica llanera, famosa por su carne a la llanera.",
+        "La Parrilla de Marcos": "Carnes a la parrilla de primera calidad."
     }
 }
 
 # ===============================================================
-# SALUDOS
-# ===============================================================
-
-saludos = [
-    "¡Hola! ¿Cómo puedo ayudarte hoy?",
-    "¡Bienvenido! ¿En qué puedo colaborar?",
-    "¡Hola! ¿Buscas información turística?",
-    "¡Bienvenido a ToliGuide! 😊"
-]
-
-# ===============================================================
-# DESPEDIDAS
-# ===============================================================
-
-despedidas = [
-    "¡Hasta pronto! 😊",
-    "¡Gracias por usar ToliGuide! 🌄",
-    "¡Que tengas un excelente día!",
-    "¡Vuelve cuando quieras para más información!"
-]
-
-# ===============================================================
-# AGRADECIMIENTOS (VARIABLE QUE TE FALTABA)
-# ===============================================================
-
-agradecimientos = [
-    "¡Con gusto! 😊",
-    "¡Para eso estoy! 🙌",
-    "¡Me alegra ayudarte! 🌟",
-    "¡Gracias a ti! ¿Necesitas algo más?"
-]
-
-# ===============================================================
-# RESPUESTAS SI NO SE ENTIENDE
-# ===============================================================
-
-fallback_responses = [
-    "No entendí muy bien, ¿podrías reformular tu pregunta?",
-    "No tengo esa información. ¿Quieres que te recomiende lugares turísticos?",
-    "Puedo ayudarte con turismo, hoteles o restaurantes de Ibagué. ¿Qué deseas saber?"
-]
-
-# ===============================================================
-# FRASES PROHIBIDAS O CONTENIDO SENSIBLE
-# ===============================================================
-
-frases_prohibidas = [
-    "bomba", "amenaza", "armas", "atentado", "matar", "terrorismo"
-]
-
-# ===============================================================
-# INTENCIONES PARA CLASIFICADOR
+# INTENCIONES PARA EL CLASIFICADOR
 # ===============================================================
 
 intenciones_clave = {
-    "saludo": ["hola", "buenas", "saludos", "hey", "qué tal"],
-    "despedida": ["adios", "hasta luego", "nos vemos", "chao"],
-    "agradecimiento": ["gracias", "te agradezco", "muy amable"],
-    "turismo": ["turismo", "visitar", "lugar", "sitio"],
+    "saludo": ["hola", "buenas", "saludos", "hey", "holi"],
+    "despedida": ["chao", "adios", "hasta luego", "nos vemos"],
+    "agradecimiento": ["gracias", "muy amable", "te agradezco"],
+    "turismo": ["turismo", "lugares", "visitar", "planes", "sitio"],
     "hotel": ["hotel", "hospedaje", "alojamiento"],
-    "restaurante": ["comida", "restaurante", "cena", "almuerzo"]
+    "restaurante": ["restaurante", "comida", "cenar", "almorzar"],
+    "pregunta_frecuente": ["horarios", "clima", "seguridad", "transporte"]
 }
+
