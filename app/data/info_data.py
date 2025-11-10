@@ -4,7 +4,8 @@
 info_data.py
 ------------------
 Repositorio de datos estáticos para el chatbot turístico.
-Incluye turismo, hoteles, restaurantes, saludos, despedidas y fallback.
+Incluye turismo, hoteles, restaurantes, saludos, despedidas,
+agradecimientos, fallbacks, frases prohibidas e intenciones.
 """
 
 # ===============================================================
@@ -20,12 +21,12 @@ DATA = {
         "naturaleza": {
             "Cañón del Combeima": "El destino ecológico más representativo de Ibagué.",
             "Nevado del Tolima": "Montaña icónica del parque Los Nevados.",
-            "Jardín Botánico San Jorge": "Una reserva natural urbana con senderos ecológicos."
+            "Jardín Botánico San Jorge": "Reserva natural urbana con senderos verdes."
         },
         "cultura": {
             "Teatro Tolima": "Escenario cultural de conciertos y obras.",
-            "Conservatorio del Tolima": "Símbolo nacional de formación musical.",
-            "Museo de Arte del Tolima": "Cuenta con exposiciones permanentes y temporales."
+            "Conservatorio del Tolima": "Centro emblemático de formación musical.",
+            "Museo de Arte del Tolima": "Exposiciones permanentes y temporales."
         }
     },
 
@@ -39,9 +40,9 @@ DATA = {
     "restaurantes": {
         "María y el Mar": "Especialidad en mariscos y pescados frescos.",
         "La Ricotta": "Comida italiana en ambiente romántico.",
-        "Punta del Este": "Restaurante tradicional de mariscos.",
+        "Punta del Este": "Mariscos tradicionales.",
         "El Fogón Llanero": "Comida típica llanera, famosa por la mamona.",
-        "La Parrilla de Marcos": "Carnes a la parrilla de excelente calidad."
+        "La Parrilla de Marcos": "Carnes a la parrilla."
     }
 }
 
@@ -52,7 +53,8 @@ DATA = {
 saludos = [
     "¡Hola! ¿Cómo puedo ayudarte hoy?",
     "¡Bienvenido! ¿En qué puedo colaborar?",
-    "¡Hola! ¿Buscas información turística?"
+    "¡Hola! ¿Buscas información turística?",
+    "¡Bienvenido a ToliGuide! 😊"
 ]
 
 # ===============================================================
@@ -61,9 +63,20 @@ saludos = [
 
 despedidas = [
     "¡Hasta pronto! 😊",
-    "¡Gracias por usar Toliguide! 🌄",
+    "¡Gracias por usar ToliGuide! 🌄",
     "¡Que tengas un excelente día!",
     "¡Vuelve cuando quieras para más información!"
+]
+
+# ===============================================================
+# AGRADECIMIENTOS (VARIABLE QUE TE FALTABA)
+# ===============================================================
+
+agradecimientos = [
+    "¡Con gusto! 😊",
+    "¡Para eso estoy! 🙌",
+    "¡Me alegra ayudarte! 🌟",
+    "¡Gracias a ti! ¿Necesitas algo más?"
 ]
 
 # ===============================================================
@@ -71,32 +84,28 @@ despedidas = [
 # ===============================================================
 
 fallback_responses = [
-    "Lo siento, no entendí tu mensaje. ¿Podrías reformularlo?",
-    "No tengo información sobre eso, ¿te gustaría que te recomiende lugares turísticos?",
+    "No entendí muy bien, ¿podrías reformular tu pregunta?",
+    "No tengo esa información. ¿Quieres que te recomiende lugares turísticos?",
     "Puedo ayudarte con turismo, hoteles o restaurantes de Ibagué. ¿Qué deseas saber?"
 ]
 
 # ===============================================================
-# FRASES PROHIBIDAS O SENSIBLES
+# FRASES PROHIBIDAS O CONTENIDO SENSIBLE
 # ===============================================================
 
 frases_prohibidas = [
-    "bomba",
-    "amenaza",
-    "armas",
-    "atentado",
-    "matar",
-    "terrorismo"
+    "bomba", "amenaza", "armas", "atentado", "matar", "terrorismo"
 ]
 
 # ===============================================================
-# INTENCIONES (si tu clasificador los usa)
+# INTENCIONES PARA CLASIFICADOR
 # ===============================================================
 
 intenciones_clave = {
     "saludo": ["hola", "buenas", "saludos", "hey", "qué tal"],
     "despedida": ["adios", "hasta luego", "nos vemos", "chao"],
-    "turismo": ["lugar", "sitio", "turismo", "visitar"],
+    "agradecimiento": ["gracias", "te agradezco", "muy amable"],
+    "turismo": ["turismo", "visitar", "lugar", "sitio"],
     "hotel": ["hotel", "hospedaje", "alojamiento"],
     "restaurante": ["comida", "restaurante", "cena", "almuerzo"]
 }
