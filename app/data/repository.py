@@ -18,7 +18,7 @@ from app.data.info_data import (
     frases_prohibidas
 )
 
-from app.utils.normalizer import normalize_text
+from app.utils.normalizer import normalizar_texto as normalize_text
 
 
 # Extraemos los diccionarios reales desde DATA
