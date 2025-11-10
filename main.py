@@ -30,6 +30,7 @@ app = Flask(__name__, template_folder="app/templates")
 
 # Gestor de sesión
 session_manager = SessionManager()
+fallback_service = FallbackService()
 
 
 @app.route("/", methods=["GET"])
@@ -75,7 +76,7 @@ def chat():
     if intencion:
         respuesta = build_response(intencion, normalizado, contexto)
     else:
-        respuesta = FallbackService.fallback_response(normalizado)
+        respuesta = fallback_service.handle(normalizado)
 
     # 7) Guardar contexto
     session_manager.actualizar_contexto(session_id, normalizado, respuesta)
