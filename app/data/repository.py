@@ -21,7 +21,7 @@ from app.data.info_data import (
     palabras_comunes,
     activadores_intencion
 )
-from app.utils.normalizer import normalize_text
+from app.utils.normalizer import normalizar_texto
 
 
 class Repository:
