@@ -164,25 +164,31 @@ class Repository:
     def get_activadores():
         return activadores_intencion
 
-        @staticmethod
+    # ------------------------------------------------------------
+    # BÚSQUEDA CENTRALIZADA DE LUGARES
+    # ------------------------------------------------------------
+    @staticmethod
     def buscar_lugar(texto):
-        """Busca coincidencias en lugares, hoteles y restaurantes."""
+        """Busca coincidencias en turismo, hoteles y restaurantes."""
         texto = texto.lower()
 
-        # Buscar en lugares turísticos
-        lugar = Repository.buscar_en_lugares(texto)
+        # Buscar en turismo (lugares turísticos)
+        lugar = Repository.buscar_en_turismo(texto)
         if lugar:
-            return lugar["nombre"], lugar["descripcion"]
+            descripcion = Repository.get_info_lugar_turistico(lugar)
+            return lugar, descripcion
 
         # Buscar en hoteles
         hotel = Repository.buscar_en_hoteles(texto)
         if hotel:
-            return hotel["nombre"], hotel["descripcion"]
+            descripcion = Repository.get_info_hotel(hotel)
+            return hotel, descripcion
 
         # Buscar en restaurantes
         restaurante = Repository.buscar_en_restaurantes(texto)
         if restaurante:
-            return restaurante["nombre"], restaurante["descripcion"]
+            descripcion = Repository.get_info_restaurante(restaurante)
+            return restaurante, descripcion
 
         return None, None
 
