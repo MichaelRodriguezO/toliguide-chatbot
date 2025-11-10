@@ -163,3 +163,26 @@ class Repository:
     @staticmethod
     def get_activadores():
         return activadores_intencion
+
+        @staticmethod
+    def buscar_lugar(texto):
+        """Busca coincidencias en lugares, hoteles y restaurantes."""
+        texto = texto.lower()
+
+        # Buscar en lugares turísticos
+        lugar = Repository.buscar_en_lugares(texto)
+        if lugar:
+            return lugar["nombre"], lugar["descripcion"]
+
+        # Buscar en hoteles
+        hotel = Repository.buscar_en_hoteles(texto)
+        if hotel:
+            return hotel["nombre"], hotel["descripcion"]
+
+        # Buscar en restaurantes
+        restaurante = Repository.buscar_en_restaurantes(texto)
+        if restaurante:
+            return restaurante["nombre"], restaurante["descripcion"]
+
+        return None, None
+
