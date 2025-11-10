@@ -21,7 +21,7 @@ from app.utils.normalizer import normalizar_texto
 from app.utils.validator import is_valid_message
 from app.services.intent_classifier import classify_intent
 from app.services.response_builder import build_response
-from app.services.fallback import fallback_response
+from app.services.fallback import FallbackService
 from app.services.session_manager import SessionManager
 
 # INICIALIZAR APP
