@@ -25,7 +25,7 @@ class IntentClassifier:
         Clasifica la intención del mensaje.
         Devuelve un string que identifica la intención detectada.
         """
-        mensaje = normalize_text(mensaje)
+        mensaje = normalizar_texto(mensaje)
 
         # 1. Prioridad alta: saludo
         if self._match_intent("saludo", mensaje):
