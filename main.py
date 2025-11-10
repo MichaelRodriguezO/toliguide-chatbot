@@ -23,6 +23,7 @@ from app.services.intent_classifier import classify_intent
 from app.services.response_builder import build_response
 from app.services.fallback import FallbackService
 from app.services.session_manager import SessionManager
+from app.services.fallback import fallback_response 
 
 # INICIALIZAR APP
 app = Flask(__name__, template_folder="app/templates")
