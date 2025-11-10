@@ -11,16 +11,16 @@ Clean Architecture: Capa de datos.
 """
 
 from app.data.info_data import (
+    DATA,
     saludos,
     despedidas,
     agradecimientos,
     preguntas_frecuentes,
-    turismo,
-    hoteles,
-    restaurantes,
-    palabras_comunes,
-    activadores_intencion
+    fallback_responses,
+    intenciones_clave,
+    frases_prohibidas
 )
+
 from app.utils.normalizer import normalizar_texto
 
 
